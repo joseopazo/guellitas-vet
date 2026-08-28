@@ -1,0 +1,20 @@
+# Dependencias
+/vendor/
+node_modules/
+
+# Configuración local / credenciales
+.env
+config/local.php
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+
+# Archivos de editor
+.vscode/
+.idea/
+*.swp
