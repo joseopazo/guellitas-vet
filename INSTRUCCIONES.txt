@@ -1,0 +1,24 @@
+GUELLITAS VET — AVANCE REAL DE LA APLICACIÓN (PHP + MySQL)
+
+Cubre en forma REAL (probada contra la base de datos, no solo diseñada):
+- RF-01 Registro de tutor (con bcrypt real)
+- RF-02 Inicio y cierre de sesión, con redirección por perfil
+- RF-05 Gestión de mascotas (crear, editar, activar/desactivar)
+- RF-06 Bloques de disponibilidad del personal clínico
+- RF-07 Cálculo de horas disponibles según disponibilidad y duración
+- RF-08 Reserva de hora, con el mismo mecanismo de traslape del capítulo VII
+        (verificación transaccional + el disparador real como respaldo)
+- RF-09 Reprogramar y anular citas (con regla de 24 h de anticipación)
+- RF-11 Cambiar el estado de una cita (confirmar / no asistió)
+- RF-12 Registro de ficha clínica (transacción atómica con el cambio de
+        estado a "Atendida", como describe el apartado 7.2.2)
+- RF-13 Historial clínico por mascota, con alerta de alergias
+
+Pendiente todavía :
+- RF-03 Recuperación de contraseña por correo
+- RF-04 Edición de perfil / cambio de contraseña desde la cuenta
+- RF-10 Envío real de correos de confirmación ( configurar SMTP)
+- RF-14/RF-15 Vacunas y motor de recordatorios automáticos
+- RF-16 Reportes exportables a CSV
+- Despliegue en hosting (por ahora se probó en local)
+
