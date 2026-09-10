@@ -1,0 +1,12 @@
+# Bloquea el acceso web directo a esta carpeta. La aplicación entera pasa
+# por public/index de cada página (bootstrap.php la incluye con require,
+# que es acceso por sistema de archivos, no por HTTP, así que no se ve
+# afectado por esta regla). Sin este archivo, cualquiera podría escribir
+# la URL de un archivo de src/ en el navegador y ver el código fuente PHP.
+<IfModule mod_authz_core.c>
+    Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+    Order deny,allow
+    Deny from all
+</IfModule>
