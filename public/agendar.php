@@ -127,7 +127,9 @@ if ($idProfesional > 0 && $idTipo > 0 && $fecha !== '') {
       <?php if (empty($disponibilidad)): ?>
         <p>No hay bloques disponibles para ese profesional en la fecha seleccionada. Prueba con otra fecha.</p>
       <?php else: ?>
-        <form method="post" action="agendar.php">
+        <div id="mensaje-hora" class="mensaje error" style="display:none">Debes seleccionar un horario antes de confirmar la reserva.</div>
+
+        <form method="post" action="agendar.php" id="form-agendar" onsubmit="return validarHoraSeleccionada()">
           <input type="hidden" name="accion" value="reservar">
           <input type="hidden" name="id_mascota" value="<?= $idMascota ?>">
           <input type="hidden" name="id_usuario_profesional" value="<?= $idProfesional ?>">
@@ -137,7 +139,7 @@ if ($idProfesional > 0 && $idTipo > 0 && $fecha !== '') {
           <div class="grid-horas">
             <?php foreach ($disponibilidad as $hora): ?>
               <label class="hora-slot">
-                <input type="radio" name="hora_inicio" value="<?= h($hora) ?>" style="display:none" onclick="document.querySelectorAll('.hora-slot').forEach(e=>e.classList.remove('seleccionada'));this.parentElement.classList.add('seleccionada')" required>
+                <input type="radio" name="hora_inicio" value="<?= h($hora) ?>" style="display:none" onclick="document.querySelectorAll('.hora-slot').forEach(e=>e.classList.remove('seleccionada'));this.parentElement.classList.add('seleccionada');document.getElementById('mensaje-hora').style.display='none'">
                 <?= h($hora) ?>
               </label>
             <?php endforeach; ?>
@@ -150,6 +152,20 @@ if ($idProfesional > 0 && $idTipo > 0 && $fecha !== '') {
 
           <button type="submit" class="boton">Confirmar reserva</button>
         </form>
+
+        <script>
+          function validarHoraSeleccionada() {
+            var seleccionada = document.querySelector('input[name="hora_inicio"]:checked');
+            var mensaje = document.getElementById('mensaje-hora');
+            if (!seleccionada) {
+              mensaje.style.display = 'block';
+              mensaje.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              return false;
+            }
+            mensaje.style.display = 'none';
+            return true;
+          }
+        </script>
       <?php endif; ?>
     </div>
   <?php endif; ?>
