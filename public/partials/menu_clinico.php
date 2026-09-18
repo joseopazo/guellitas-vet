@@ -10,5 +10,6 @@
   <nav class="menu-lateral">
     <a href="dashboard_clinico.php" class="<?= $activo === 'inicio' ? 'activo' : '' ?>">Mi agenda</a>
     <a href="mi_horario.php" class="<?= $activo === 'horario' ? 'activo' : '' ?>">Mi disponibilidad</a>
+    <a href="perfil.php" class="<?= $activo === 'perfil' ? 'activo' : '' ?>">Mi perfil</a>
   </nav>
   <div class="contenido">
