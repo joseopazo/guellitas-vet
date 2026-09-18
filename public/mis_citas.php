@@ -92,7 +92,7 @@ function claseBadge(string $estado): string
                   <form method="post" action="mis_citas.php" style="margin-top:0.5rem">
                     <input type="hidden" name="accion" value="reprogramar">
                     <input type="hidden" name="id_cita" value="<?= (int) $c['id_cita'] ?>">
-                    <input type="hidden" name="duracion_min" value="30">
+                    <input type="hidden" name="duracion_min" value="<?= (int) $c['duracion_min'] ?>">
                     <input type="date" name="nueva_fecha" required min="<?= date('Y-m-d') ?>">
                     <input type="time" name="nueva_hora" required>
                     <button type="submit" class="boton pequeno">Confirmar</button>
