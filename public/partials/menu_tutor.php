@@ -12,5 +12,6 @@
     <a href="mascotas.php" class="<?= $activo === 'mascotas' ? 'activo' : '' ?>">Mis mascotas</a>
     <a href="agendar.php" class="<?= $activo === 'agendar' ? 'activo' : '' ?>">Agendar hora</a>
     <a href="mis_citas.php" class="<?= $activo === 'citas' ? 'activo' : '' ?>">Mis citas</a>
+    <a href="perfil.php" class="<?= $activo === 'perfil' ? 'activo' : '' ?>">Mi perfil</a>
   </nav>
   <div class="contenido">
