@@ -220,12 +220,22 @@ class CitaDAO
         return (bool) $stmt->fetchColumn();
     }
 
+    /** Control de acceso: evita que un profesional modifique una cita de otro (RNF de seguridad). */
+    public function perteneceAProfesional(int $idCita, int $idUsuarioProfesional): bool
+    {
+        $stmt = $this->pdo->prepare(
+            'SELECT 1 FROM cita WHERE id_cita = :id AND id_usuario = :id_usuario'
+        );
+        $stmt->execute([':id' => $idCita, ':id_usuario' => $idUsuarioProfesional]);
+        return (bool) $stmt->fetchColumn();
+    }
+
     public function listarPorTutor(int $idUsuarioTutor): array
     {
         $stmt = $this->pdo->prepare(
             "SELECT c.id_cita, c.fecha_hora_inicio, c.fecha_hora_fin, c.motivo,
                     m.nombre AS mascota, u.nombre AS profesional_nombre, u.apellido AS profesional_apellido,
-                    t.nombre_tipo, e.nombre_estado
+                    t.nombre_tipo, t.duracion_min, e.nombre_estado
              FROM cita c
              INNER JOIN mascota m ON m.id_mascota = c.id_mascota
              INNER JOIN usuario u ON u.id_usuario = c.id_usuario
