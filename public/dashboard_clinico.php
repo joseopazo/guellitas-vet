@@ -11,10 +11,13 @@ $fecha = (string) ($_GET['fecha'] ?? date('Y-m-d'));
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['accion']) && $_POST['accion'] === 'marcar_estado') {
     $idCita = (int) ($_POST['id_cita'] ?? 0);
     $nuevoEstado = (string) ($_POST['nuevo_estado'] ?? '');
-    try {
-        $citaDAO->marcarEstado($idCita, $nuevoEstado);
-    } catch (CitaInvalidaException $e) {
-        // se ignora silenciosamente en esta vista; la fila simplemente no cambia
+    // Control de acceso: un profesional solo puede modificar sus propias citas.
+    if ($citaDAO->perteneceAProfesional($idCita, $idUsuario)) {
+        try {
+            $citaDAO->marcarEstado($idCita, $nuevoEstado);
+        } catch (CitaInvalidaException $e) {
+            // se ignora silenciosamente en esta vista; la fila simplemente no cambia
+        }
     }
     header('Location: dashboard_clinico.php?fecha=' . urlencode($fecha));
     exit;
