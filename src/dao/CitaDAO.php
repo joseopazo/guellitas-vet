@@ -271,6 +271,35 @@ class CitaDAO
         return $stmt->fetchAll();
     }
 
+    /**
+     * Citas de un profesional dentro de un rango de fechas, con filtro opcional
+     * de estado (RF-16: reporte exportable a CSV). Mantiene el mismo control de
+     * pertenencia del resto del módulo: cada profesional solo ve sus propias citas.
+     */
+    public function listarPorProfesionalRango(int $idUsuarioProfesional, string $desde, string $hasta, ?string $estado = null): array
+    {
+        $sql = "SELECT c.id_cita, c.fecha_hora_inicio, c.fecha_hora_fin, c.motivo,
+                       m.nombre AS mascota, tu.nombre AS tutor_nombre, tu.apellido AS tutor_apellido,
+                       t.nombre_tipo, t.valor, e.nombre_estado
+                FROM cita c
+                INNER JOIN mascota m ON m.id_mascota = c.id_mascota
+                INNER JOIN usuario tu ON tu.id_usuario = m.id_usuario
+                INNER JOIN tipo_atencion t ON t.id_tipo_atencion = c.id_tipo_atencion
+                INNER JOIN estado_cita e ON e.id_estado_cita = c.id_estado_cita
+                WHERE c.id_usuario = :id_usuario
+                  AND DATE(c.fecha_hora_inicio) BETWEEN :desde AND :hasta";
+        $params = [':id_usuario' => $idUsuarioProfesional, ':desde' => $desde, ':hasta' => $hasta];
+        if ($estado !== null && $estado !== '') {
+            $sql .= ' AND e.nombre_estado = :estado';
+            $params[':estado'] = $estado;
+        }
+        $sql .= ' ORDER BY c.fecha_hora_inicio';
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll();
+    }
+
     public function marcarEstado(int $idCita, string $estado): void
     {
         $mapa = [
@@ -286,3 +315,4 @@ class CitaDAO
         $stmt->execute([':estado' => $mapa[$estado], ':id' => $idCita]);
     }
 }
+
